@@ -1,0 +1,20 @@
+(define (cubt x)
+  (define (cube-iter guess x)
+    (if (good-enough? guess x)
+        guess
+        (cube-iter (improve guess x)
+                   x)))
+  (define (good-enough? guess x)
+    (< (abs (- (cube guess) x)) 0.001))
+  (define (cube x)
+    (* x x x))
+  (define (improve guess x)
+    (/ (+ (/ x 
+             (* guess guess))
+          (* guess 2))
+       3))
+  (cube-iter 1.0 x))
+(cubt 8)
+(cubt (+ 20 7))
+(cubt (cubt 1000000000))
+
