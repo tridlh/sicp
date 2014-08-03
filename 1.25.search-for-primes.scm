@@ -21,13 +21,15 @@
     (= (expmod a n n) a))
   (try-it (+ 1 (random (- n 1)))))
 (define (expmod base exp m)
-  (cond ((= exp 0) 1)
-        ((even? exp)
-         (remainder (square (expmod base (/ exp 2) m))
-                    m))
-        (else
-         (remainder (* base (expmod base (- exp 1) m))
-                    m))))
+  (remainder (fast-expt base exp) m))
+(define (fast-expt b n)
+  (cond ((= n 0) 1)
+        ((even? n) (square (fast-expt b (/ n 2))))
+        (else (* b (fast-expt b (- n 1))))))
+;The expmod will be much slower than that of 1.24.
+;In 1.24, remainder was frequently used so we do not
+;need to calculate the exp of large number, which is 
+;expensive. 
 
 (define (timed-prime-test n)
   (start-prime-test n (runtime)))
@@ -48,6 +50,6 @@
   (sfp n (+ n 30)))
 (search-for-primes 1000)
 (search-for-primes 10000)
-(search-for-primes 1000000000)
-(search-for-primes 10000000000)
-(search-for-primes 100000000000)
+;(search-for-primes 1000000000)
+;(search-for-primes 10000000000)
+;(search-for-primes 100000000000)

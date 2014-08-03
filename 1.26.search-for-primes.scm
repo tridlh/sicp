@@ -23,11 +23,15 @@
 (define (expmod base exp m)
   (cond ((= exp 0) 1)
         ((even? exp)
-         (remainder (square (expmod base (/ exp 2) m))
+         (remainder (* (expmod base (/ exp 2) m)
+                       (expmod base (/ exp 2) m))
                     m))
         (else
          (remainder (* base (expmod base (- exp 1) m))
                     m))))
+;After replace square by direct multiplication, the
+;expmod will be called (2 exp (log n)) times instead
+;of (log n) times.
 
 (define (timed-prime-test n)
   (start-prime-test n (runtime)))
@@ -46,8 +50,8 @@
     (if (< n end) (timed-prime-test n))
     (if (< n end) (sfp (+ 1 n) end)))
   (sfp n (+ n 30)))
-(search-for-primes 1000)
-(search-for-primes 10000)
-(search-for-primes 1000000000)
-(search-for-primes 10000000000)
-(search-for-primes 100000000000)
+(search-for-primes 1000)  
+(search-for-primes 10000)  
+;(search-for-primes 1000000000)  
+;(search-for-primes 10000000000)  
+;(search-for-primes 100000000000)  
